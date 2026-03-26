@@ -84,20 +84,26 @@ export default function App() {
     const percentage = (totalScore / maxScore) * 100;
 
     // Determine Level
-    let level = '赛跑层';
-    let levelDesc = '你正在为金钱工作，虽然有收入，但一旦停止工作，生活将面临挑战。';
-    let emotionalValue = '保持耐心，你已经意识到了财务结构的重要性，这是跳出老鼠赛跑的第一步。';
-    
-    const passiveIncomeCoverage = answers[28]; // Q28: 生钱资产能否覆盖月度总支出
+    const passiveIncomeScore = (answers[6] || 0) + (answers[9] || 0);
+    const hasPassiveIncome = passiveIncomeScore > 0;
+    const passiveIncomeCoverage = answers[28] || 0; // Q28: 生钱资产能否覆盖月度总支出
 
-    if (passiveIncomeCoverage === 10) {
+    let level = '赛跑层';
+    let levelDesc = '你正在为金钱工作，虽然有收入，但一旦停止工作，生活将面临挑战。目前处于典型的“老鼠赛跑”阶段。';
+    let emotionalValue = '保持耐心，你已经意识到了财务结构的重要性，这是跳出老鼠赛跑的第一步。';
+
+    if (passiveIncomeCoverage === 10 && hasPassiveIncome) {
       level = '顺流层';
       levelDesc = '恭喜！你已实现财务自由。你的被动收入完全覆盖了生活支出，你可以自由选择生活方式。';
       emotionalValue = '你是财务自由的先行者，金钱已经成为你的仆人而非主人。';
-    } else if (passiveIncomeCoverage >= 8 || percentage > 80) {
+    } else if ((passiveIncomeCoverage >= 8 && hasPassiveIncome) || (percentage > 80 && passiveIncomeCoverage >= 5)) {
       level = '平稳层';
       levelDesc = '你的财务状况非常稳健，被动收入已能覆盖大部分支出，距离自由仅一步之遥。';
       emotionalValue = '你已经掌握了财富的密码，现在的你充满了掌控感和安全感。';
+    } else if (percentage > 70 && !hasPassiveIncome) {
+      level = '积蓄层';
+      levelDesc = '你拥有极佳的储蓄习惯和财务纪律，但目前仍高度依赖主动收入。你需要开始学习如何将积蓄转化为“生钱资产”。';
+      emotionalValue = '你已经攒够了第一桶金，现在是时候让钱为你工作了。';
     } else if (percentage < 40 || answers[14] === 0) {
       level = '逆流层';
       levelDesc = '警报！你的财务状况正处于逆流中。高负债或极低结余让你在风险面前非常脆弱。';
