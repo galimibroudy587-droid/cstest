@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rich-purple: #4c1d95;
+  --color-rich-gold: #fbbf24;
+  --color-rich-bg: #f3f4f6;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-rich-bg text-gray-900;
+  }
+}
+
+.rich-dad-gradient {
+  background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
