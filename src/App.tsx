@@ -18,15 +18,11 @@ import {
   Trophy,
   AlertCircle,
   Zap,
-  Target,
-  Sparkles,
-  Loader2
+  Target
 } from 'lucide-react';
 import { QUESTIONS, Question } from './data/questions';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { GoogleGenAI } from "@google/genai";
-import Markdown from 'react-markdown';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,8 +34,6 @@ export default function App() {
   const [state, setState] = useState<AppState>('welcome');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [aiAdvice, setAiAdvice] = useState<string | null>(null);
-  const [isAiLoading, setIsAiLoading] = useState(false);
 
   const progress = ((currentQuestionIndex + 1) / QUESTIONS.length) * 100;
 
@@ -112,45 +106,6 @@ export default function App() {
 
     return { radarData, percentage, level, levelDesc, emotionalValue, sections };
   }, [state, answers]);
-
-  const getAiAnalysis = async () => {
-    if (!results) return;
-    setIsAiLoading(true);
-    try {
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        setAiAdvice("未配置 API Key，请在 Vercel 环境变量中设置 GEMINI_API_KEY。");
-        return;
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `
-          作为一名精通《穷爸爸富爸爸》理论和财富流沙盘规则的专家，请分析以下财商测试结果：
-          - 总分：${Math.round(results.percentage)}/100
-          - 等级：${results.level}
-          - 基础稳健得分：${results.radarData[0].A}%
-          - 收入结构得分：${results.radarData[1].A}%
-          - 支出管理得分：${results.radarData[2].A}%
-          - 资产质量得分：${results.radarData[3].A}%
-          
-          请给出：
-          1. 核心问题诊断（一句话）
-          2. 深度分析（基于富爸爸理论，区分生钱资产与耗钱资产）
-          3. 具体的“跳出老鼠赛跑”行动方案（3个步骤）
-          
-          语言风格：专业、犀利、富有启发性。
-        `,
-      });
-      setAiAdvice(response.text);
-    } catch (error) {
-      console.error(error);
-      setAiAdvice("获取 AI 建议失败，请检查网络或 API Key 配置。");
-    } finally {
-      setIsAiLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
@@ -365,48 +320,12 @@ export default function App() {
                   </div>
                 </section>
 
-                <div className="space-y-4">
-                  {!aiAdvice ? (
-                    <button 
-                      onClick={getAiAnalysis}
-                      disabled={isAiLoading}
-                      className="w-full rich-dad-gradient text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
-                    >
-                      {isAiLoading ? (
-                        <>
-                          <Loader2 size={20} className="animate-spin" />
-                          AI 专家正在深度解析...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles size={20} className="text-rich-gold" />
-                          获取 AI 深度财商分析
-                        </>
-                      )}
-                    </button>
-                  ) : (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-rich-purple/5 p-6 rounded-3xl border border-rich-purple/20"
-                    >
-                      <h3 className="text-lg font-bold text-rich-purple mb-3 flex items-center gap-2">
-                        <Sparkles size={20} />
-                        AI 专家深度建议
-                      </h3>
-                      <div className="markdown-body text-sm text-gray-700 leading-relaxed prose prose-sm prose-purple">
-                        <Markdown>{aiAdvice}</Markdown>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  <button 
-                    onClick={() => window.location.reload()}
-                    className="w-full py-4 rounded-2xl border-2 border-rich-purple text-rich-purple font-bold hover:bg-rich-purple hover:text-white transition-all"
-                  >
-                    重新测试
-                  </button>
-                </div>
+                <button 
+                  onClick={() => window.location.reload()}
+                  className="w-full py-4 rounded-2xl border-2 border-rich-purple text-rich-purple font-bold hover:bg-rich-purple hover:text-white transition-all"
+                >
+                  重新测试
+                </button>
               </div>
             </div>
           </motion.div>

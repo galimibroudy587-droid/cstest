@@ -14,14 +14,7 @@
 2.  点击 **Add New...** -> **Project**。
 3.  导入你存放此代码的 GitHub 仓库。
 
-### 3. 配置环境变量 (关键)
-在部署设置页面，找到 **Environment Variables** 部分，添加以下变量：
-
-| Key | Value | 说明 |
-| :--- | :--- | :--- |
-| `GEMINI_API_KEY` | `你的 API KEY` | 用于 AI 深度分析功能。可以从 Google AI Studio 获取。 |
-
-### 4. 部署
+### 3. 部署
 点击 **Deploy**。Vercel 会自动识别 Vite 配置并完成构建。
 
 ## 🛠 技术栈
@@ -29,7 +22,6 @@
 *   **Styling**: Tailwind CSS
 *   **Animation**: Framer Motion
 *   **Charts**: Recharts
-*   **AI**: Google Gemini API (@google/genai)
 
 ## 📄 核心逻辑
 *   **财务自由标准**: 被动收入 ≥ 总支出。
