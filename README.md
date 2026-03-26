@@ -1,20 +1,37 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 财富流财商测试 (Wealth Flow FQ Test)
 
-# Run and deploy your AI Studio app
+基于《穷爸爸富爸爸》核心理论与财富流沙盘规则的个人财务健康体检工具。
 
-This contains everything you need to run your app locally.
+## 🚀 部署到 Vercel 指南
 
-View your app in AI Studio: https://ai.studio/apps/0258fc30-9af8-443a-bb3f-76919250ed97
+如果你想将此应用部署到 Vercel，请按照以下步骤操作：
 
-## Run Locally
+### 1. 准备工作
+*   确保你已经通过 AI Studio 的 **Settings -> Export** 功能将代码同步到了 GitHub 仓库。
 
-**Prerequisites:**  Node.js
+### 2. 在 Vercel 上创建项目
+1.  登录 [Vercel](https://vercel.com/)。
+2.  点击 **Add New...** -> **Project**。
+3.  导入你存放此代码的 GitHub 仓库。
 
+### 3. 配置环境变量 (关键)
+在部署设置页面，找到 **Environment Variables** 部分，添加以下变量：
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+| Key | Value | 说明 |
+| :--- | :--- | :--- |
+| `GEMINI_API_KEY` | `你的 API KEY` | 用于 AI 深度分析功能。可以从 Google AI Studio 获取。 |
+
+### 4. 部署
+点击 **Deploy**。Vercel 会自动识别 Vite 配置并完成构建。
+
+## 🛠 技术栈
+*   **Frontend**: React 19 + Vite
+*   **Styling**: Tailwind CSS
+*   **Animation**: Framer Motion
+*   **Charts**: Recharts
+*   **AI**: Google Gemini API (@google/genai)
+
+## 📄 核心逻辑
+*   **财务自由标准**: 被动收入 ≥ 总支出。
+*   **财富等级**: 逆流层、赛跑层、平稳层、顺流层。
+*   **资产区分**: 严格区分“生钱资产”与“耗钱资产”。
